@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
 import * as THREE from "three";
 import axios from "axios";
 import colorlist from "../colors/colors";
@@ -19,6 +20,7 @@ class Viewer extends Component {
     maxAge: 200,
     noParticles: 10000,
     fadeOutPercentage: 0.1,
+    stats: false,
   };
 
   downloadLake = async (url) => {
@@ -58,8 +60,10 @@ class Viewer extends Component {
     var light = new THREE.AmbientLight(0x404040);
     this.scene.add(light);
 
-    this.stats = new Stats();
-    document.body.appendChild(this.stats.domElement);
+    if (this.state.stats) {
+      this.stats = new Stats();
+      document.body.appendChild(this.stats.domElement);
+    }
   };
 
   setColors = (colorTitle) => {
@@ -112,21 +116,29 @@ class Viewer extends Component {
     if (process) data = process(data);
     var colors = colorlist.find((c) => c.name === colorTitle).data;
     var options = { min: data.min, max: data.max, colors };
-    this.streamlines = new StreamLines(
-      data.grid,
-      data.bounds,
-      this.scene,
-      options
-    );
-    this.startAnimationLoop();
-    this.setState({ loaded: true, min: data.min, max: data.max });
+    try {
+      this.streamlines = new StreamLines(
+        data.grid,
+        data.bounds,
+        this.scene,
+        options
+      );
+      this.startAnimationLoop();
+      this.setState({ loaded: true, min: data.min, max: data.max });
+    } catch (e) {
+      console.error(e);
+      document.getElementById("text").innerHTML =
+        "Failed to plot 3D streamlines";
+      document.getElementById("subtext").innerHTML =
+        '<a href="/">Click here to return home.</>';
+    }
   }
 
   startAnimationLoop = () => {
     this.streamlines.animate();
     this.renderer.render(this.scene, this.camera);
     this.requestID = window.requestAnimationFrame(this.startAnimationLoop);
-    this.stats.update();
+    if (this.state.stats) this.stats.update();
   };
 
   componentDidUpdate = (prevProps, prevState) => {
@@ -141,7 +153,7 @@ class Viewer extends Component {
   }
 
   render() {
-    var { bottomLeft, topLeft } = this.props;
+    var { bottomLeft } = this.props;
     var {
       loaded,
       noParticles,
@@ -153,13 +165,19 @@ class Viewer extends Component {
       max,
     } = this.state;
     var colors = colorlist.find((c) => c.name === colorTitle).data;
-    document.title = "Dynamic Lakes - A day in the life of Lake Geneva";
     return (
       <React.Fragment>
-        <div className="main">
+        <div className="viewer">
           {loaded && (
             <React.Fragment>
-              <div className="time fade-in">{topLeft}</div>
+              <Link to="/">
+                <div className="home fade-in">
+                  <div className="head">3D Streamlines</div>
+                  <div className="sub">
+                    Visualising 3D velocity fields in the browser
+                  </div>
+                </div>
+              </Link>
               <div className="controls fade-in">
                 <div className="plotparameters">
                   <div className="plotrow" style={{ marginBottom: "0" }}>
@@ -239,7 +257,7 @@ class Viewer extends Component {
             {!loaded && (
               <div className="pagecenter">
                 <div className="loading-text" id="text">
-                  Welcome to Dynamic Lakes
+                  Preparing 3D Streamlines
                 </div>
                 <div className="loading-subtext" id="subtext">
                   Waiting for response from server...

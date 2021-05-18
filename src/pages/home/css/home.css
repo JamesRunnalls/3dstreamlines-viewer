@@ -37,6 +37,49 @@
   padding: 10px;
 }
 
+.main .title {
+  text-align: center;
+  color: white;
+  font-family: monospace;
+  margin-top: 15vh;
+}
+
+.main .title .head {
+  font-size: 43px;
+}
+
+.main .gallery {
+  text-align: center;
+}
+
+.main .gallery a {
+  text-decoration: none;
+  color: white;
+  font-family: monospace;
+}
+
+.main .gallery .page {
+  display: inline-block;
+  width: 500px;
+  padding: 0 30px;
+  max-width: 90%;
+  margin-top: 50px;
+}
+
+.main .gallery .page .name {
+  font-size: 20px;
+  margin-top: 5px;
+}
+
+.main .gallery .page img {
+  max-width: 100%;
+  transition: transform 0.2s;
+}
+
+.main .gallery .page img:hover {
+  transform: scale(1.05);
+}
+
 .main .git {
   position: fixed;
   bottom: 0;
@@ -50,7 +93,7 @@
 
 .main .git img {
   transition: transform 0.2s;
-  width: 30px;
+  width: 50px;
 }
 
 .main .git img:hover {

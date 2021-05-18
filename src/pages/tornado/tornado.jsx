@@ -8,10 +8,20 @@ class Tornado extends Component {
     return data;
   };
   render() {
-    document.title = "Tornado";
-    var reference = "https://cgl.ethz.ch/research/visualization/data.php";
+    document.title = "Tornado | 3D Streamlines";
+    var reference = (
+      <div>
+        <div>Synthetic model of a tornado.</div>
+        <div>
+          <b>Data:</b> Roger Crawfis. Tornado Data set generator. 2003.{" "}
+          <a href="http://web.cse.ohio-state.edu/~crawfis.3/Data/Tornado/">
+            http://web.cse.ohio-state.edu/~crawfis.3/Data/Tornado/
+          </a>{" "}
+        </div>
+      </div>
+    );
     var url =
-      "https://dynamiclakes.s3.eu-central-1.amazonaws.com/tornado4.json";
+      "https://3dstreamlines.s3.eu-central-1.amazonaws.com/tornado.json";
     return <Viewer url={url} bottomLeft={reference} process={this.process} />;
   }
 }
