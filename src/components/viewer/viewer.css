@@ -1,86 +1,35 @@
-.main {
+.viewer {
   width: 100%;
   height: 600px;
 }
 
-.main .time {
+.viewer .home {
+  text-align: center;
+  color: white;
+  font-family: monospace;
   position: fixed;
   top: 0;
   left: 0;
   z-index: 1;
-  color: white;
-  font-family: monospace;
-  max-width: 250px;
   padding: 10px;
 }
 
-.main .time table {
-  font-size: 20px;
-}
-
-.main .time table img {
-  height: 14px;
-  cursor: pointer;
-  margin-left: 7px;
-  position: absolute;
-  margin-top: 5px;
-}
-
-.main .controls {
-  position: fixed;
-  top: 0;
-  right: 0;
-  z-index: 1;
-  color: white;
-  font-family: monospace;
-  max-width: 250px;
-  padding: 10px;
-}
-
-.main .title {
-  text-align: center;
-  color: white;
-  font-family: monospace;
-  margin-top: 15vh;
-}
-
-.main .title .head {
+.viewer .home .head {
   font-size: 43px;
 }
 
-.main .gallery {
-  text-align: center;
-}
-
-.main .gallery a {
-  text-decoration: none;
+.viewer .controls {
+  position: fixed;
+  top: 0;
+  right: 0;
+  z-index: 1;
   color: white;
   font-family: monospace;
+  max-width: 250px;
+  padding: 10px;
 }
 
-.main .gallery .page {
-  display: inline-block;
-  width: 500px;
-  padding: 0 30px;
-  max-width: 90%;
-  margin-top: 50px;
-}
-
-.main .gallery .page .name {
-  font-size: 20px;
-  margin-top: 5px;
-}
-
-.main .gallery .page img {
-  max-width: 100%;
-  transition: transform 0.2s;
-}
-
-.main .gallery .page img:hover {
-  transform: scale(1.05);
-}
-
-.main .git {
+.viewer .git {
   position: fixed;
   bottom: 0;
   right: 0;
@@ -91,45 +40,45 @@
   padding: 10px;
 }
 
-.main .git img {
+.viewer .git img {
   transition: transform 0.2s;
-  width: 50px;
+  width: 30px;
 }
 
-.main .git img:hover {
+.viewer .git img:hover {
   transform: scale(1.05);
 }
 
-.main .about {
+.viewer .bottomLeft {
   position: fixed;
   bottom: 0;
   left: 0;
   z-index: 1;
   color: white;
   font-family: monospace;
-  max-width: 250px;
+  max-width: 350px;
   padding: 10px;
 }
 
-.main .about a {
+.viewer .bottomLeft a {
   text-decoration: none;
   font-weight: bold;
   cursor: pointer;
   color: white;
 }
 
-.main .controls .plotparameters .plotrow {
+.viewer .controls .plotparameters .plotrow {
   margin-bottom: 10px;
   text-align: right;
 }
 
-.main .controls .plotparameters .plotrow table.color-values {
+.viewer .controls .plotparameters .plotrow table.color-values {
   width: 106%;
   font-size: 10px;
   margin-left: -2%;
 }
 
-.main .controls .plotparameters .plotrow button {
+.viewer .controls .plotparameters .plotrow button {
   background-color: transparent;
   color: white;
   border: 1px solid white;
@@ -138,29 +87,29 @@
   cursor: pointer;
 }
 
-.main .controls .plotparameters .plotrow button:hover {
+.viewer .controls .plotparameters .plotrow button:hover {
   background-color: rgba(255, 255, 255, 0.1);
 }
 
-.main .controls .plotparameters .plotrow input {
+.viewer .controls .plotparameters .plotrow input {
   border: 1px solid white;
   background-color: transparent;
   color: white;
   width: 70px;
 }
 
-.main .controls .plotparameters table.scale-box {
+.viewer .controls .plotparameters table.scale-box {
   border-collapse: collapse;
   display: inline-block;
   margin-bottom: -4px;
   margin-left: 10px;
 }
 
-.main .controls .plotparameters table.scale-box td {
+.viewer .controls .plotparameters table.scale-box td {
   border: 1px solid white;
 }
 
-.main .controls .plotparameters table.scale-box input {
+.viewer .controls .plotparameters table.scale-box input {
   color: white;
   background: transparent;
   border: 0;
@@ -175,6 +124,10 @@
   left: 0;
   top: 0;
   background-color: black;
+}
+
+.threeviewer a {
+  color: white;
 }
 
 .threeviewer canvas {
