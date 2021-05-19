@@ -4,6 +4,7 @@ import Home from "./pages/home/home";
 import NotFound from "./pages/notfound/notfound";
 import Tornado from './pages/tornado/tornado';
 import Geneva from './pages/geneva/geneva';
+import DensityCurrents from './pages/densitycurrents/densitycurrents';
 
 class App extends Component {
   render() {
@@ -12,6 +13,7 @@ class App extends Component {
         <Switch>
           <Route path="/tornado" exact component={Tornado} />
           <Route path="/lakegeneva" exact component={Geneva} />
+          <Route path="/densitycurrents" exact component={DensityCurrents} />
           <Route path="/" exact component={Home} />
           <Route path="/" component={NotFound} />
         </Switch>

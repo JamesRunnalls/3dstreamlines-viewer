@@ -51,14 +51,20 @@ class StreamLines {
   computeBounds = (data, bounds) => {
     if (!this.yarr) {
       bounds["yLen"] = data.u.length;
+      bounds["yMin"] = parseFloat(bounds["yMin"]);
+      bounds["yMax"] = parseFloat(bounds["yMax"]);
       bounds["ySize"] = (bounds["yMax"] - bounds["yMin"]) / bounds["yLen"];
     }
     if (!this.xarr) {
       bounds["xLen"] = data.u[0].length;
+      bounds["xMin"] = parseFloat(bounds["xMin"]);
+      bounds["xMax"] = parseFloat(bounds["xMax"]);
       bounds["xSize"] = (bounds["xMax"] - bounds["xMin"]) / bounds["xLen"];
     }
     if (!this.zarr) {
       bounds["zLen"] = data.u[0][0].length;
+      bounds["zMin"] = parseFloat(bounds["zMin"]);
+      bounds["zMax"] = parseFloat(bounds["zMax"]);
       bounds["zSize"] = (bounds["zMax"] - bounds["zMin"]) / bounds["zLen"];
     }
     return bounds;

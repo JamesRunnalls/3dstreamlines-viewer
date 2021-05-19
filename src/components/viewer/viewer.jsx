@@ -166,7 +166,6 @@ class Viewer extends Component {
       noParticles,
       velocityFactor,
       maxAge,
-      mesh,
       colorTitle,
       min,
       max,
@@ -204,14 +203,6 @@ class Viewer extends Component {
                         </tr>
                       </tbody>
                     </table>
-                  </div>
-                  <div className="plotrow">
-                    View Boundary
-                    <input
-                      type="checkbox"
-                      checked={mesh}
-                      onChange={this.toggleMesh}
-                    />
                   </div>
                   <div className="plotrow">
                     Streams{" "}

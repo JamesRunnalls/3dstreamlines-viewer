@@ -147,7 +147,7 @@ class Geneva extends Component {
     var reference =
       "Dynamic lakes displays simulated mixing in Lake Geneva from Jan 4th. Data comes from the Meteolakes project.";
     var url =
-      "https://dynamiclakes.s3.eu-central-1.amazonaws.com/geneva_20210104_0000.json";
+      "https://3dstreamlines.s3.eu-central-1.amazonaws.com/lakegeneva.json";
     return (
       <Viewer
         url={url}
