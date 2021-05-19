@@ -13,13 +13,13 @@ import "./viewer.css";
 class Viewer extends Component {
   state = {
     loaded: false,
-    colorTitle: "spectrum",
-    min: 0,
-    max: 1,
-    velocityFactor: 0.5,
-    maxAge: 200,
-    noParticles: 10000,
-    fadeOutPercentage: 0.1,
+    colorTitle: this.props.options.colorTitle || "spectrum",
+    min: this.props.options.min || 0,
+    max: this.props.options.max || 1,
+    velocityFactor: this.props.options.velocityFactor || 0.5,
+    maxAge: this.props.options.maxAge || 200,
+    noParticles: this.props.options.noParticles || 10000,
+    fadeOutPercentage: this.props.options.fadeOutPercentage || 0.1,
     stats: false,
   };
 
@@ -33,6 +33,8 @@ class Viewer extends Component {
           "Downloading velocity field... " + percentage + "%";
       },
     });
+    document.getElementById("subtext").innerHTML =
+      "Processing velocity field...";
     return data;
   };
 
@@ -41,7 +43,7 @@ class Viewer extends Component {
     const height = this.mount.clientHeight;
 
     this.scene = new THREE.Scene();
-    //this.scene.background = new THREE.Color(0x000000);
+    this.scene.background = new THREE.Color(0x000000);
     this.camera = new THREE.PerspectiveCamera(
       75, // fov = field of view
       width / height, // aspect ratio
@@ -108,14 +110,16 @@ class Viewer extends Component {
   };
 
   async componentDidMount() {
-    var { url, process } = this.props;
+    var { url, process, options } = this.props;
     var { colorTitle } = this.state;
     this.sceneSetup();
     window.addEventListener("resize", this.handleWindowResize);
     var data = await this.downloadLake(url);
     if (process) data = process(data);
     var colors = colorlist.find((c) => c.name === colorTitle).data;
-    var options = { min: data.min, max: data.max, colors };
+    options["colors"] = colors;
+    if ("min" in data) options["min"] = data.min
+    if ("max" in data) options["max"] = data.max
     try {
       this.streamlines = new StreamLines(
         data.grid,
@@ -124,7 +128,7 @@ class Viewer extends Component {
         options
       );
       this.startAnimationLoop();
-      this.setState({ loaded: true, min: data.min, max: data.max });
+      this.setState({ loaded: true, min: options.min, max: options.max });
     } catch (e) {
       console.error(e);
       document.getElementById("text").innerHTML =
@@ -149,7 +153,10 @@ class Viewer extends Component {
   componentWillUnmount() {
     window.removeEventListener("resize", this.handleWindowResize);
     window.cancelAnimationFrame(this.requestID);
-    this.controls.dispose();
+    this.scene = null;
+    this.projector = null;
+    this.camera = null;
+    this.controls = null;
   }
 
   render() {

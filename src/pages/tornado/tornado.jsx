@@ -2,6 +2,11 @@ import React, { Component } from "react";
 import Viewer from "../../components/viewer/viewer";
 
 class Tornado extends Component {
+  state = {
+    options: {
+      velocityFactor: 0.1,
+    },
+  };
   process = (data) => {
     data.bounds.zMin = -20.0;
     data.bounds.zMax = 20.0;
@@ -22,7 +27,14 @@ class Tornado extends Component {
     );
     var url =
       "https://3dstreamlines.s3.eu-central-1.amazonaws.com/tornado.json";
-    return <Viewer url={url} bottomLeft={reference} process={this.process} />;
+    return (
+      <Viewer
+        url={url}
+        bottomLeft={reference}
+        process={this.process}
+        options={this.state.options}
+      />
+    );
   }
 }
 

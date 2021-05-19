@@ -18,6 +18,12 @@
   font-size: 43px;
 }
 
+@media screen and (max-width: 600px) {
+  .viewer .home {
+    display: none;
+  }
+}
+
 .viewer .controls {
   position: fixed;
   top: 0;
@@ -56,8 +62,9 @@
   z-index: 1;
   color: white;
   font-family: monospace;
-  max-width: 350px;
+  width: 350px;
   padding: 10px;
+  max-width: calc(100vw - 60px);
 }
 
 .viewer .bottomLeft a {

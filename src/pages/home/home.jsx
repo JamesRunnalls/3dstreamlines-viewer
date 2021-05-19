@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
 import git from "./img/git.png";
 import geneva from "./img/geneva.gif";
 import tornado from "./img/tornado.gif";
@@ -10,13 +9,13 @@ class Page extends Component {
   render() {
     var { name, link, description, img } = this.props.details;
     return (
-      <Link to={link}>
+      <a href={link}>
         <div className="page">
           <img src={img} alt={name} />
           <div className="name">{name}</div>
           <div>{description}</div>
         </div>
-      </Link>
+      </a>
     );
   }
 }

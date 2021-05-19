@@ -12,7 +12,7 @@ class StreamLines {
     this.velocityFactor = options.velocityFactor || 0.1;
     this.min = options.min || 0;
     this.max = options.max || 1;
-    this.colorSource = options.colorSource || "mag";
+    this.colorSource = options.colorSource || false;
     this.colors = options.colors || [
       { color: "#000000", point: 0.0 },
       { color: "#550088", point: 0.14285714285714285 },
@@ -30,16 +30,37 @@ class StreamLines {
   }
 
   verfiyData = (data) => {
+    if ("x" in data) {
+      this.xarr = true;
+    } else {
+      this.xarr = false;
+    }
+    if ("y" in data) {
+      this.yarr = true;
+    } else {
+      this.yarr = false;
+    }
+    if ("z" in data) {
+      this.zarr = true;
+    } else {
+      this.zarr = false;
+    }
     return data;
   };
 
   computeBounds = (data, bounds) => {
-    bounds["yLen"] = data.u.length;
-    bounds["xLen"] = data.u[0].length;
-    bounds["zLen"] = data.u[0][0].length;
-    bounds["ySize"] = (bounds["yMax"] - bounds["yMin"]) / bounds["yLen"];
-    bounds["xSize"] = (bounds["xMax"] - bounds["xMin"]) / bounds["xLen"];
-    bounds["zSize"] = (bounds["zMax"] - bounds["zMin"]) / bounds["zLen"];
+    if (!this.yarr) {
+      bounds["yLen"] = data.u.length;
+      bounds["ySize"] = (bounds["yMax"] - bounds["yMin"]) / bounds["yLen"];
+    }
+    if (!this.xarr) {
+      bounds["xLen"] = data.u[0].length;
+      bounds["xSize"] = (bounds["xMax"] - bounds["xMin"]) / bounds["xLen"];
+    }
+    if (!this.zarr) {
+      bounds["zLen"] = data.u[0][0].length;
+      bounds["zSize"] = (bounds["zMax"] - bounds["zMin"]) / bounds["zLen"];
+    }
     return bounds;
   };
 
@@ -47,13 +68,11 @@ class StreamLines {
     this.validCells = [];
     for (let i = 0; i < this.bounds["yLen"]; i++) {
       for (let j = 0; j < this.bounds["xLen"]; j++) {
-        for (let k = 0; k < this.bounds["zLen"]; k++) {
-          if (
-            this.data.u[i][j][k][0] !== null &&
-            this.data.u[i][j][k][1] !== null &&
-            this.data.u[i][j][k][2] !== null
-          ) {
-            this.validCells.push([i, j, k]);
+        if (this.data.u[i][j] !== null) {
+          for (let k = 0; k < this.bounds["zLen"]; k++) {
+            if (this.data.u[i][j][k] !== null) {
+              this.validCells.push([i, j, k]);
+            }
           }
         }
       }
@@ -128,9 +147,22 @@ class StreamLines {
       let line = this.streamlines.children[i];
       let pick = this.validCells[Math.round(pl * Math.random())];
       let positions = line.geometry.attributes.position.array;
-      positions[0] = this.bounds.xMin + this.bounds.xSize * pick[1] + (this.bounds.xSize * Math.random() - this.bounds.xSize); // x
-      positions[1] = this.bounds.zMin + this.bounds.zSize * pick[2] + (this.bounds.zSize * Math.random() - this.bounds.zSize); // z
-      positions[2] = this.bounds.yMin + this.bounds.ySize * pick[0] + (this.bounds.ySize * Math.random() - this.bounds.ySize); // y
+      positions[0] = this.xarr
+        ? this.data.x[pick[1]]
+        : this.bounds.xMin +
+          this.bounds.xSize * pick[1] +
+          (this.bounds.xSize * Math.random() - this.bounds.xSize); // x
+      positions[1] = this.zarr
+        ? this.data.z[pick[2]]
+        : this.bounds.zMin +
+          this.bounds.zSize * pick[2] +
+          (this.bounds.zSize * Math.random() - this.bounds.zSize); // z
+      positions[2] = this.yarr
+        ? this.data.y[pick[0]]
+        : this.bounds.yMin +
+          this.bounds.ySize * pick[0] +
+          (this.bounds.ySize * Math.random() - this.bounds.ySize); // y
+
       positions[3] = positions[0];
       positions[4] = positions[1];
       positions[5] = positions[2];
@@ -156,9 +188,11 @@ class StreamLines {
           positions[line.age * 3] = nextposition.x;
           positions[line.age * 3 + 1] = nextposition.z;
           positions[line.age * 3 + 2] = nextposition.y;
-          let v = Math.sqrt(
-            nextposition.u ** 2 + nextposition.v ** 2 + nextposition.w ** 2
-          );
+          let v = this.colorSource
+            ? nextposition.m
+            : Math.sqrt(
+                nextposition.u ** 2 + nextposition.v ** 2 + nextposition.w ** 2
+              );
           let color =
             this.colorBar[
               Math.min(
@@ -196,9 +230,21 @@ class StreamLines {
           Math.round((this.maxAge - this.fadeOut) * Math.random()) +
           this.fadeOut;
         let pick = this.validCells[Math.round(pl * Math.random())];
-        positions[0] = this.bounds.xMin + this.bounds.xSize * pick[1] + (this.bounds.xSize * Math.random() - this.bounds.xSize); // x
-        positions[1] = this.bounds.zMin + this.bounds.zSize * pick[2] + (this.bounds.zSize * Math.random() - this.bounds.zSize); // z
-        positions[2] = this.bounds.yMin + this.bounds.ySize * pick[0] + (this.bounds.ySize * Math.random() - this.bounds.ySize); // y
+        positions[0] = this.xarr
+          ? this.data.x[pick[1]]
+          : this.bounds.xMin +
+            this.bounds.xSize * pick[1] +
+            (this.bounds.xSize * Math.random() - this.bounds.xSize); // x
+        positions[1] = this.zarr
+          ? this.data.z[pick[2]]
+          : this.bounds.zMin +
+            this.bounds.zSize * pick[2] +
+            (this.bounds.zSize * Math.random() - this.bounds.zSize); // z
+        positions[2] = this.yarr
+          ? this.data.y[pick[0]]
+          : this.bounds.yMin +
+            this.bounds.ySize * pick[0] +
+            (this.bounds.ySize * Math.random() - this.bounds.ySize); // y
         positions[3] = positions[0];
         positions[4] = positions[1];
         positions[5] = positions[2];
@@ -212,10 +258,29 @@ class StreamLines {
     }
   };
 
+  indexOfClosest = (num, arr) => {
+    var index = 0;
+    var diff = Math.abs(num - arr[0]);
+    for (var val = 0; val < arr.length; val++) {
+      var newdiff = Math.abs(num - arr[val]);
+      if (newdiff < diff) {
+        diff = newdiff;
+        index = val;
+      }
+    }
+    return index;
+  };
+
   nextPosition = (xin, yin, zin) => {
-    var i = Math.round((yin - this.bounds.yMin) / this.bounds.ySize);
-    var j = Math.round((xin - this.bounds.xMin) / this.bounds.xSize);
-    var k = Math.round((zin - this.bounds.zMin) / this.bounds.zSize);
+    var i = this.yarr
+      ? this.indexOfClosest(yin, this.data.y)
+      : Math.round((yin - this.bounds.yMin) / this.bounds.ySize);
+    var j = this.xarr
+      ? this.indexOfClosest(xin, this.data.x)
+      : Math.round((xin - this.bounds.xMin) / this.bounds.xSize);
+    var k = this.zarr
+      ? this.indexOfClosest(zin, this.data.z)
+      : Math.round((zin - this.bounds.zMin) / this.bounds.zSize);
     if (
       i > -1 &&
       i < this.bounds["yLen"] &&
@@ -228,10 +293,11 @@ class StreamLines {
       var u = this.data.u[i][j][k];
       var v = this.data.v[i][j][k];
       var w = this.data.w[i][j][k];
+      var m = this.colorSource ? this.data.m[i][j][k] : NaN;
       var x = xin + u * this.velocityFactor;
       var y = yin + v * this.velocityFactor;
       var z = zin + w * this.velocityFactor;
-      return { x, y, z, u, v, w };
+      return { x, y, z, u, v, w, m };
     } else {
       return false;
     }
