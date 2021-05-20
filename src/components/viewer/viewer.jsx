@@ -7,7 +7,7 @@ import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import ColorRamp from "../colors/colorramp";
 import Stats from "three/examples/jsm/libs/stats.module.js";
 import git from "./img/git.png";
-import StreamLines from "../3dstreamlines/3dstreamlines";
+import StreamLines from "3dstreamlines";
 import "./viewer.css";
 
 class Viewer extends Component {

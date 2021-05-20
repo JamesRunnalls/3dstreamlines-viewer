@@ -6,8 +6,9 @@ class DensityCurrents extends Component {
     options: {
       velocityFactor: 5,
       noParticles: 10000,
-      min: 0,
-      max: 0.05,
+      min: 9.27,
+      max: 11.29,
+      colorSource: true,
     },
   };
   process = (data) => {
@@ -20,10 +21,10 @@ class DensityCurrents extends Component {
     data.bounds.yMax =
       (parseFloat(data.bounds.yMax) - parseFloat(data.bounds.yMin)) / 8;
     data.bounds.zMin =
-      -(parseFloat(data.bounds.zMax) - parseFloat(data.bounds.zMin)) / 3;
+      -(parseFloat(data.bounds.zMax) - parseFloat(data.bounds.zMin)) / 2;
     data.bounds.zMax =
-      (parseFloat(data.bounds.zMax) - parseFloat(data.bounds.zMin)) / 3;
-    delete data.grid.m;
+      (parseFloat(data.bounds.zMax) - parseFloat(data.bounds.zMin)) / 2;
+    //delete data.grid.m;
     return data;
   };
   render() {
