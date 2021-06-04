@@ -7,7 +7,7 @@ import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import ColorRamp from "../colors/colorramp";
 import Stats from "three/examples/jsm/libs/stats.module.js";
 import git from "./img/git.png";
-import StreamLines from "3dstreamlines";
+import Streamlines from "three-streamlines";
 import "./viewer.css";
 
 class Viewer extends Component {
@@ -118,15 +118,11 @@ class Viewer extends Component {
     if (process) data = process(data);
     var colors = colorlist.find((c) => c.name === colorTitle).data;
     options["colors"] = colors;
-    if ("min" in data) options["min"] = data.min
-    if ("max" in data) options["max"] = data.max
+    if ("min" in data) options["min"] = data.min;
+    if ("max" in data) options["max"] = data.max;
     try {
-      this.streamlines = new StreamLines(
-        data.grid,
-        data.bounds,
-        this.scene,
-        options
-      );
+      this.streamlines = new Streamlines(data.grid, data.bounds, options);
+      this.scene.add(this.streamlines.object());
       this.startAnimationLoop();
       this.setState({ loaded: true, min: options.min, max: options.max });
     } catch (e) {
@@ -161,15 +157,8 @@ class Viewer extends Component {
 
   render() {
     var { bottomLeft } = this.props;
-    var {
-      loaded,
-      noParticles,
-      velocityFactor,
-      maxAge,
-      colorTitle,
-      min,
-      max,
-    } = this.state;
+    var { loaded, noParticles, velocityFactor, maxAge, colorTitle, min, max } =
+      this.state;
     var colors = colorlist.find((c) => c.name === colorTitle).data;
     return (
       <React.Fragment>
@@ -243,7 +232,7 @@ class Viewer extends Component {
               <div className="git fade-in">
                 <a
                   title="Check out the project on GitHub"
-                  href="https://github.com/JamesRunnalls/dynamiclakes"
+                  href="https://github.com/JamesRunnalls/3dstreamlines"
                 >
                   <img src={git} alt="git" />
                 </a>

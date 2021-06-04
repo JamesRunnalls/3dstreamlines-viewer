@@ -3,8 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "3dstreamlines": "^1.0.4",
     "@material-ui/core": "^4.11.4",
+    "3dstreamlines": "^1.0.9",
     "axios": "^0.21.1",
     "d3": "^5.12.0",
     "date-fns": "^2.21.3",
@@ -16,7 +16,8 @@
     "react-ga": "^3.3.0",
     "react-router-dom": "^5.0.1",
     "react-scripts": "^3.4.1",
-    "three": "^0.119.1"
+    "three": "^0.119.1",
+    "three-streamlines": "^1.0.2"
   },
   "build": "INLINE_RUNTIME_CHUNK=false react-scripts build",
   "devDependencies": {},

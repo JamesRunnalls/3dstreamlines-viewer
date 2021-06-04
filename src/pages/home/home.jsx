@@ -56,7 +56,7 @@ class Home extends Component {
         <div className="git fade-in">
           <a
             title="Check out the project on GitHub"
-            href="https://github.com/JamesRunnalls/dynamiclakes"
+            href="https://github.com/JamesRunnalls/3dstreamlines"
           >
             <img src={git} alt="git" />
           </a>
